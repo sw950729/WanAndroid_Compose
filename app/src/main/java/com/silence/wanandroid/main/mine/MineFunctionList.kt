@@ -5,7 +5,7 @@ import com.silence.wanandroid.R
 
 object MineFunctionList {
 
-    val functions: List<FunctionItem> = listOf<FunctionItem>(
+    val functions: List<FunctionItem> = listOf(
         FunctionItem(iconSource = R.mipmap.coin_count, title = "积分记录") {
             Log.i(
                 "MineFunctionList",
@@ -18,7 +18,7 @@ object MineFunctionList {
                 "我的收藏"
             )
         },
-        FunctionItem(iconSource = R.mipmap.mine_share, title = "我的分享") {
+        FunctionItem(iconSource = R.mipmap.article, title = "我的分享") {
             Log.i(
                 "MineFunctionList",
                 "我的分享"

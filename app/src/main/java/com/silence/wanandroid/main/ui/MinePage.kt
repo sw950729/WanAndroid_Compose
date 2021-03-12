@@ -2,13 +2,16 @@ package com.silence.wanandroid.main.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
@@ -19,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.silence.wanandroid.config.SilenceColors
@@ -33,11 +37,11 @@ import dev.chrisbanes.accompanist.coil.CoilImage
  * @author:Silence
  * @describe:
  **/
-//@Preview
+@Preview
 @Composable
 fun MinePage() {
 
-    var userInfo: UserInfo = UserInfo();
+    val userInfo = UserInfo()
     val userState = mutableStateOf(userInfo)
 
     UserPad(userInfo = userState.value)
@@ -89,7 +93,7 @@ fun MineFunctionItem(functionItem: FunctionItem) {
             painter = painterResource(id = functionItem.iconSource),
             contentDescription = "",
             modifier = Modifier
-                .size(32.dp)
+                .size(30.dp)
         )
         Text(
             text = functionItem.title,
@@ -113,8 +117,8 @@ fun MineFunctionItem(functionItem: FunctionItem) {
                 style = TextStyle(color = Color.Black, fontSize = 14.sp),
                 modifier = Modifier.padding(start = SilenceSizes.mine_content_start_padding)
             )
-            Image(
-                painter = painterResource(id = functionItem.arrowSource),
+            Icon(
+                Icons.Filled.KeyboardArrowRight,
                 contentDescription = "",
                 modifier = Modifier.size(26.dp)
             )
@@ -125,7 +129,6 @@ fun MineFunctionItem(functionItem: FunctionItem) {
 
 @Composable
 fun UserPad(userInfo: UserInfo) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = Modifier
             .fillMaxWidth()
@@ -175,7 +178,6 @@ fun UserPad(userInfo: UserInfo) {
             )
         }
     }
-
 
 }
 
