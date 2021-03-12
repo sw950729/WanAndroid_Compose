@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +28,8 @@ import com.silence.wanandroid.main.home.viewmodel.HomeViewModel
 @Preview
 @Composable
 fun HomePage() {
-    var homeViewModel = HomeViewModel()
+    val homeViewModel = HomeViewModel()
+    val list = homeViewModel.homeArticleData.observeAsState()
     homeViewModel.getHomeArticleList(0)
     Column {
         AppBar(title = {
@@ -46,9 +48,9 @@ fun HomePage() {
             )
         })
         LazyColumn {
-            item(homeViewModel.homeArticleData.value?.pageCount) {
-                homeViewModel.getArticleList()?.let {
-                    ArticleListItem(it[0])
+            list.value?.datas?.forEach {
+                item {
+                    ArticleListItem(it)
                 }
             }
         }

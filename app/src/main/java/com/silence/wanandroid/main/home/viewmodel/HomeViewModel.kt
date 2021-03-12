@@ -24,7 +24,4 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
-    fun getArticleList(): MutableList<ArticleListBean>? {
-        return homeArticleData.value?.datas
-    }
 }
