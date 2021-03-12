@@ -50,8 +50,8 @@ fun MinePage() {
             .fillMaxWidth()
             .background(
                 Color.White, RoundedCornerShape(
-                    topStart = SilenceSizes.mine_function_top_corner,
-                    topEnd = SilenceSizes.mine_function_top_corner
+                    topStart = SilenceSizes.mineFunctionTopCorner,
+                    topEnd = SilenceSizes.mineFunctionTopCorner
                 )
             )
     ) {

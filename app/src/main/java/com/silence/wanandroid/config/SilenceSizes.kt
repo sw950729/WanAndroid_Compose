@@ -12,7 +12,7 @@ object SilenceSizes {
     val mineContentStartPadding = 16.dp
     val mineContentEndPadding = 16.dp
     val mineUserPadFunctionSpacer = 10.dp
-    val mine_function_top_corner = 10.dp
+    val mineFunctionTopCorner = 10.dp
 
     //textSize
     val textSize10 = 10.sp
