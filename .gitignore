@@ -1,4 +1,11 @@
 .idea/*
-build/*
-app/build/*
-local.properties
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/modules.xml
+/.idea/caches/build_file_checksums.ser
+.DS_Store
+/build
+/captures
