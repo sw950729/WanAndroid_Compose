@@ -3,7 +3,6 @@ package com.silence.wanandroid.main.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomAppBar
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.silence.wanandroid.R
+import com.silence.wanandroid.compose.SilenceIcon
+import com.silence.wanandroid.config.MainConfig
 import com.silence.wanandroid.config.SilenceColors
+import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.config.SilenceStrings
 
 /**
@@ -28,23 +28,23 @@ import com.silence.wanandroid.config.SilenceStrings
  **/
 @Composable
 fun MainPage() {
-    val currentPage = remember { mutableStateOf(0) }
+    val currentPage = remember { mutableStateOf(MainConfig.HOME) }
     Scaffold(
         bottomBar = {
             MyBottomBar(currentPage)
         },
         content = {
             when (currentPage.value) {
-                0 -> {
+                MainConfig.HOME -> {
                     HomePage()
                 }
-                1 -> {
+                MainConfig.NAVIGATION -> {
                     NavigationPage()
                 }
-                2 -> {
+                MainConfig.PROJECT -> {
                     ProjectsPage()
                 }
-                3 -> {
+                MainConfig.MINE -> {
                     MinePage()
                 }
             }
@@ -61,11 +61,11 @@ fun MyBottomBar(currentPage: MutableState<Int>) {
                 modifier = Modifier
                     .weight(1f)
                     .clickable {
-                        currentPage.value = 0
+                        currentPage.value = MainConfig.HOME
                     },
                 ImageBitmap.imageResource(id = R.mipmap.switch_home_icon),
                 SilenceStrings.bottomHomeTitle,
-                if (currentPage.value == 0) {
+                if (currentPage.value == MainConfig.HOME) {
                     SilenceColors.colorMain
                 } else {
                     Color.Black
@@ -75,11 +75,11 @@ fun MyBottomBar(currentPage: MutableState<Int>) {
                 modifier = Modifier
                     .weight(1f)
                     .clickable {
-                        currentPage.value = 1
+                        currentPage.value = MainConfig.NAVIGATION
                     },
                 ImageBitmap.imageResource(id = R.mipmap.silence_navigation_icon),
                 SilenceStrings.bottomNavigationTitle,
-                if (currentPage.value == 1) {
+                if (currentPage.value == MainConfig.NAVIGATION) {
                     SilenceColors.colorMain
                 } else {
                     Color.Black
@@ -89,11 +89,11 @@ fun MyBottomBar(currentPage: MutableState<Int>) {
                 modifier = Modifier
                     .weight(1f)
                     .clickable {
-                        currentPage.value = 2
+                        currentPage.value = MainConfig.PROJECT
                     },
                 ImageBitmap.imageResource(id = R.mipmap.silence_projects_icon),
                 SilenceStrings.bottomProjectTitle,
-                if (currentPage.value == 2) {
+                if (currentPage.value == MainConfig.PROJECT) {
                     SilenceColors.colorMain
                 } else {
                     Color.Black
@@ -103,11 +103,11 @@ fun MyBottomBar(currentPage: MutableState<Int>) {
                 modifier = Modifier
                     .weight(1f)
                     .clickable {
-                        currentPage.value = 3
+                        currentPage.value = MainConfig.MINE
                     },
                 ImageBitmap.imageResource(id = R.mipmap.silence_mine_icon),
                 SilenceStrings.bottomMineTitle,
-                if (currentPage.value == 3) {
+                if (currentPage.value == MainConfig.MINE) {
                     SilenceColors.colorMain
                 } else {
                     Color.Black
@@ -126,16 +126,16 @@ fun HomeBottomItem(
     color: Color
 ) {
     Column(
-        modifier.padding(0.dp, 8.dp, 0.dp, 8.dp),
+        modifier.padding(bottom = SilenceSizes.padding8),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageBitmap, null,
+        SilenceIcon(
+            imageBitmap,
             Modifier
-                .width(25.dp)
-                .height(25.dp), tint = color
+                .width(SilenceSizes.padding25)
+                .height(SilenceSizes.padding25), tint = color
         )
-        Text(title, fontSize = 12.sp, color = color)
+        Text(title, fontSize = SilenceSizes.textSize12, color = color)
     }
 }
 

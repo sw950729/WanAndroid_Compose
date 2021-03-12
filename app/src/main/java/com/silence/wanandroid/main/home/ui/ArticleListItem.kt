@@ -14,12 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.silence.wanandroid.config.SilenceColors
+import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.main.home.model.ArticleListBean
 
 /**
@@ -27,27 +25,26 @@ import com.silence.wanandroid.main.home.model.ArticleListBean
  * @author:Silence
  * @describe:
  **/
-@Preview
 @Composable
 fun ArticleListItem(articleListBean: ArticleListBean) {
-    Box(modifier = Modifier.padding(10.dp)) {
+    Box(modifier = Modifier.padding(SilenceSizes.padding10)) {
         Card(
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(SilenceSizes.padding4),
             backgroundColor = Color.White,
-            elevation = 4.dp
+            elevation = SilenceSizes.padding4
         ) {
             ConstraintLayout(
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(SilenceSizes.padding5)
                     .fillMaxWidth()
             ) {
                 val (title, image, author, time) = createRefs()
                 Text(
                     articleListBean.title,
-                    fontSize = 16.sp,
+                    fontSize = SilenceSizes.textSize16,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.constrainAs(title) {
-                        top.linkTo(parent.top, 10.dp)
+                        top.linkTo(parent.top, SilenceSizes.padding10)
                         start.linkTo(parent.start)
                         end.linkTo(image.start)
                         width = Dimension.fillToConstraints
@@ -55,9 +52,9 @@ fun ArticleListItem(articleListBean: ArticleListBean) {
                 )
                 Icon(Icons.Outlined.FavoriteBorder, null,
                     modifier = Modifier.constrainAs(image) {
-                        top.linkTo(parent.top, 10.dp)
+                        top.linkTo(parent.top, SilenceSizes.padding10)
                         end.linkTo(parent.end)
-                        start.linkTo(title.end, 10.dp)
+                        start.linkTo(title.end, SilenceSizes.padding10)
                     })
                 Text(
                     if (TextUtils.isEmpty(articleListBean.author)) {
@@ -65,13 +62,13 @@ fun ArticleListItem(articleListBean: ArticleListBean) {
                     } else {
                         "作者：${articleListBean.author}"
                     },
-                    fontSize = 12.sp,
+                    fontSize = SilenceSizes.textSize12,
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = SilenceSizes.padding5)
                         .constrainAs(author) {
                             start.linkTo(parent.start)
-                            bottom.linkTo(parent.bottom, 8.dp)
-                            top.linkTo(title.bottom, 18.dp)
+                            bottom.linkTo(parent.bottom, SilenceSizes.padding8)
+                            top.linkTo(title.bottom, SilenceSizes.padding18)
                             end.linkTo(time.start)
                             width = Dimension.fillToConstraints
                         },
@@ -82,13 +79,13 @@ fun ArticleListItem(articleListBean: ArticleListBean) {
                     }
                 )
                 Text(
-                    articleListBean.niceDate, fontSize = 12.sp,
+                    articleListBean.niceDate, fontSize = SilenceSizes.textSize12,
                     modifier = Modifier
-                        .padding(end = 5.dp)
+                        .padding(end = SilenceSizes.padding5)
                         .constrainAs(time) {
                             end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom, 8.dp)
-                            start.linkTo(author.end, 10.dp)
+                            bottom.linkTo(parent.bottom, SilenceSizes.padding8)
+                            start.linkTo(author.end, SilenceSizes.padding10)
                         }
                 )
             }

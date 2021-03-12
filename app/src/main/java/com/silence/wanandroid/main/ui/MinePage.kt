@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -23,8 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.main.mine.FunctionItem
@@ -48,7 +45,7 @@ fun MinePage() {
     Column(
         modifier = Modifier
             .padding(
-                top = SilenceSizes.mine_user_pad_height - SilenceSizes.mine_user_pad_function_spacer,
+                top = SilenceSizes.mineUserPadHeight - SilenceSizes.mineUserPadFunctionSpacer,
             )
             .fillMaxWidth()
             .background(
@@ -71,8 +68,8 @@ fun FunctionList(functionItems: List<FunctionItem>) {
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(
-                start = SilenceSizes.mine_content_start_padding,
-                end = SilenceSizes.mine_content_end_padding
+                start = SilenceSizes.mineContentStartPadding,
+                end = SilenceSizes.mineContentEndPadding
             )
     )
 
@@ -84,7 +81,7 @@ fun MineFunctionItem(functionItem: FunctionItem) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(SilenceSizes.padding50)
             .clickable {
                 functionItem.onClick()
             }
@@ -93,20 +90,20 @@ fun MineFunctionItem(functionItem: FunctionItem) {
             painter = painterResource(id = functionItem.iconSource),
             contentDescription = "",
             modifier = Modifier
-                .size(30.dp)
+                .size(SilenceSizes.padding30)
         )
         Text(
             text = functionItem.title,
             style = TextStyle(
                 color = Color.Black,
                 fontFamily = FontFamily.Monospace,
-                fontSize = 16.sp
+                fontSize = SilenceSizes.textSize16
             ),
-            modifier = Modifier.padding(start = SilenceSizes.mine_content_start_padding)
+            modifier = Modifier.padding(start = SilenceSizes.mineContentStartPadding)
         )
         Text(
             text = functionItem.subTitle,
-            style = TextStyle(color = Color.Black, fontSize = 12.sp)
+            style = TextStyle(color = Color.Black, fontSize = SilenceSizes.textSize12)
         )
         Row(
             horizontalArrangement = Arrangement.End,
@@ -114,13 +111,13 @@ fun MineFunctionItem(functionItem: FunctionItem) {
         ) {
             Text(
                 text = functionItem.arrowText,
-                style = TextStyle(color = Color.Black, fontSize = 14.sp),
-                modifier = Modifier.padding(start = SilenceSizes.mine_content_start_padding)
+                style = TextStyle(color = Color.Black, fontSize = SilenceSizes.textSize14),
+                modifier = Modifier.padding(start = SilenceSizes.mineContentStartPadding)
             )
             Icon(
                 Icons.Filled.KeyboardArrowRight,
                 contentDescription = "",
-                modifier = Modifier.size(26.dp)
+                modifier = Modifier.size(SilenceSizes.padding26)
             )
         }
 
@@ -132,19 +129,17 @@ fun UserPad(userInfo: UserInfo) {
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = Modifier
             .fillMaxWidth()
-            .height(SilenceSizes.mine_user_pad_height)
+            .height(SilenceSizes.mineUserPadHeight)
             .background(SilenceColors.colorMain)
     ) {
         Column(
             modifier = Modifier
                 .padding(
-                    start = SilenceSizes.mine_user_avatar_left_padding,
-                    0.dp,
-                    end = SilenceSizes.mine_user_avatar_right_padding,
-                    0.dp,
+                    start = SilenceSizes.mineUserAvatarLeftPadding,
+                    end = SilenceSizes.mineUserAvatarRightPadding,
                 )
-                .width(SilenceSizes.mine_user_avatar_height)
-                .height(SilenceSizes.mine_user_avatar_height)
+                .width(SilenceSizes.mineUserAvatarHeight)
+                .height(SilenceSizes.mineUserAvatarHeight)
         ) {
             CoilImage(
                 data = userInfo.avatarUrl,
@@ -159,22 +154,27 @@ fun UserPad(userInfo: UserInfo) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp, 12.dp, 0.dp, SilenceSizes.mine_content_end_padding)
+                .padding(
+                    SilenceSizes.padding12,
+                    SilenceSizes.padding12,
+                    SilenceSizes.padding0,
+                    SilenceSizes.mineContentEndPadding
+                )
         ) {
 
             Text(
                 text = userInfo.nickName,
                 style = TextStyle(
                     color = Color.White,
-                    fontSize = 16.sp,
+                    fontSize = SilenceSizes.textSize16,
                     fontFamily = FontFamily.Monospace
                 )
             )
 
             Text(
                 text = "等级：${userInfo.level}  排名：${userInfo.rank}  积分：${userInfo.integration}",
-                style = TextStyle(color = Color.White, fontSize = 14.sp),
-                modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)
+                style = TextStyle(color = Color.White, fontSize = SilenceSizes.textSize14),
+                modifier = Modifier.padding(top = SilenceSizes.padding16)
             )
         }
     }
