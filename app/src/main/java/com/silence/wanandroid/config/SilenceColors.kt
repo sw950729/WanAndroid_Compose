@@ -12,4 +12,5 @@ object SilenceColors {
 
 
     val colorMain = Color(0xFF0084FF)
+
 }
