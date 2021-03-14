@@ -2,6 +2,7 @@ package com.silence.wanandroid.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
 import com.silence.wanandroid.base.BaseActivity
 import com.silence.wanandroid.main.ui.MainPage
 

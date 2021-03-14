@@ -5,14 +5,25 @@ import androidx.compose.ui.unit.sp
 
 object SilenceSizes {
 
+    val appBarHeight = 60.dp
+
+    val normalContentStartPadding = 32.dp
+    val normalContentEndPadding = 32.dp
+
     val mineUserPadHeight = 180.dp
     val mineUserAvatarHeight = 80.dp
     val mineUserAvatarLeftPadding = 12.dp
     val mineUserAvatarRightPadding = 12.dp
-    val mineContentStartPadding = 16.dp
-    val mineContentEndPadding = 16.dp
+    val mineContentStartPadding = normalContentStartPadding
+    val mineContentEndPadding = normalContentEndPadding
     val mineUserPadFunctionSpacer = 10.dp
     val mineFunctionTopCorner = 10.dp
+
+    object Login {
+        val loginHeaderPadHeight = 220.dp
+
+    }
+
 
     //textSize
     val textSize10 = 10.sp
