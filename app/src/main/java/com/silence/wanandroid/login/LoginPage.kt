@@ -271,7 +271,7 @@ fun AccountPasswordFormArea(
     var repeatPasswordInputState by remember { TextFieldValue("").asState() }
 
     if (showRepeatPassword) {
-        val repeatPasswordHasFocus by remember { false.asState() }
+        var repeatPasswordHasFocus by remember { false.asState() }
 
         var repeatPasswordShowType by remember { false.asState() }
         TextField(
@@ -313,9 +313,9 @@ fun AccountPasswordFormArea(
                 .height(60.dp)
                 .fillMaxWidth()
                 .onFocusChanged {
-                    passwordHasFocus =
+                    repeatPasswordHasFocus =
                         (it != FocusState.Disabled && it != FocusState.Inactive)
-                    Log.i("LoginPage", "passwordHasFocus =$passwordHasFocus")
+                    Log.i("LoginPage", "passwordHasFocus =$repeatPasswordHasFocus")
                 },
             colors = textFieldColors(
                 backgroundColor = Color.White,
