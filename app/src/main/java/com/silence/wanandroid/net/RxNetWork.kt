@@ -2,15 +2,26 @@ package com.silence.wanandroid.net
 
 import android.text.TextUtils
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.silence.wanandroid.BuildConfig
+import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
+import com.silence.wanandroid.MyApplication
+
+import com.silence.wanandroid.utils.SharedPreferencesUtil
+import com.google.gson.reflect.TypeToken
+import org.json.JSONArray
 
 
 /**
@@ -55,6 +66,8 @@ object RxNetWork {
             synchronized(RxNetWork::class.java) {
                 if (mOkHttpClient == null) {
                     mOkHttpClient = OkHttpClient.Builder()
+                        .addInterceptor(getInsertCookieInterceptor())
+                        .addInterceptor(getSaveCookieInterceptor())
                         .addInterceptor(getHttpLoggingInterceptor())
                         .addNetworkInterceptor(
                             HttpLoggingInterceptor().setLevel(
@@ -86,5 +99,52 @@ object RxNetWork {
             })
         loggingInterceptor.level = level
         return loggingInterceptor
+    }
+
+    private fun getSaveCookieInterceptor(): Interceptor {
+        //增加cookie信息
+        return Interceptor { chain ->
+            val request = chain.request()
+            val originalResponse = chain.proceed(request)
+            if (request.url.toString().contains("user/login")){
+                val headers = originalResponse.headers("Set-Cookie")
+                if (headers.isNotEmpty()) {
+                    val jsonArray = JsonArray()
+                    headers.forEach {
+                        jsonArray.add(it)
+                    }
+                    Log.i("RxNetWork", "jsonArray.toString() = $jsonArray")
+                    SharedPreferencesUtil.getInstance().putString(
+                        "cookies", jsonArray.toString()
+                    )
+                }
+            }
+            originalResponse
+        }
+    }
+
+    private fun getInsertCookieInterceptor(): Interceptor {
+        //缓存
+        val cacheFile = File(MyApplication.getApp().cacheDir, "cache")
+        //100Mb
+        val cache = Cache(cacheFile, 1024 * 1024 * 100)
+        //增加头部信息
+        return Interceptor { chain ->
+            val builder: Request.Builder = chain.request().newBuilder()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+            val cookieStr = SharedPreferencesUtil.getInstance().getString("cookies")
+            Log.i("RxNetWork", "cookieStr: $cookieStr")
+
+            if (cookieStr.isNotEmpty()) {
+                val cookies: JsonArray = Gson().fromJson(cookieStr, JsonArray::class.java)
+                Log.i("RxNetWork", " cookies.toString() = $cookies")
+                cookies.forEach {
+                    builder.addHeader("Cookie", it.toString())
+                }
+            }
+            val request: Request = builder.build()
+            chain.proceed(request)
+        }
     }
 }

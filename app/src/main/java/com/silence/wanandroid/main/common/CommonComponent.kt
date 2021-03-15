@@ -1,5 +1,6 @@
 package com.silence.wanandroid.main.common
 
+import androidx.annotation.ColorInt
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Surface
@@ -29,6 +30,10 @@ fun <T> T.asState(): MutableState<T> {
 
 fun <T> T.asLiveData(): MutableLiveData<T> {
     return MutableLiveData(this)
+}
+
+fun Boolean.selectColor(selectColor: Color, unSelectColor: Color): Color {
+    return if (this) selectColor else unSelectColor
 }
 
 @Composable

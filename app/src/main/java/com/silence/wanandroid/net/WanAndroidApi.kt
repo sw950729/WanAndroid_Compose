@@ -2,9 +2,12 @@ package com.silence.wanandroid.net
 
 import com.silence.wanandroid.main.home.model.BannerBean
 import com.silence.wanandroid.main.home.model.HomeArticleBean
+import com.silence.wanandroid.main.mine.UserInfo
 import com.silence.wanandroid.net.model.BaseBean
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 /**
@@ -19,4 +22,17 @@ interface WanAndroidApi {
 
     @GET("article/list/{page}/json")
     suspend fun getHomeArticle(@Path("page") page: Int): BaseBean<HomeArticleBean?>
+
+    @POST("user/login")
+    suspend fun loginByPassword(
+        @Query("username") loginName: String,
+        @Query("password") password: String
+    ): BaseBean<UserInfo?>
+
+    @POST("user/register")
+    suspend fun register(
+        @Query("username") loginName: String,
+        @Query("password") password: String,
+        @Query("repassword") repeatPassword: String,
+    ): BaseBean<UserInfo?>
 }

@@ -45,6 +45,10 @@ class Router private constructor() {
                 instance.stack.pop()?.get()?.finish()
             }
         }
+
+        fun current(): Activity? {
+            return instance.stack.peek()?.get()
+        }
     }
 
     private val stack = Stack<WeakReference<Activity>>()

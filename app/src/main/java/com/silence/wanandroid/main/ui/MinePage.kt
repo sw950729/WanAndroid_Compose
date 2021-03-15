@@ -144,7 +144,7 @@ fun UserPad(userInfo: UserInfo) {
                 .height(SilenceSizes.mineUserAvatarHeight)
         ) {
             CoilImage(
-                data = userInfo.avatarUrl,
+                data = userInfo.icon,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "avatar",
                 modifier = Modifier
