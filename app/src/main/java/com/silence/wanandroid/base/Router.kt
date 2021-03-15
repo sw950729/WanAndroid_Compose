@@ -1,7 +1,6 @@
 package com.silence.wanandroid.base
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import java.lang.ref.WeakReference
@@ -40,10 +39,27 @@ class Router private constructor() {
             }
         }
 
-        fun back(pageCount: Int = 1) {
+        fun back(
+            pageCount: Int = 1,
+            includeMainPage: Boolean = true,
+            whenIsMainPage: (activity: Activity) -> Unit = {}
+        ) {
             repeat(pageCount) {
+                if (instance.stack.size == 0) {
+                    return
+                }
+                if (instance.stack.size == 1) {
+                    instance.stack.peek().get()?.let { it1 -> whenIsMainPage(it1) }
+                    if (!includeMainPage) {
+                        return
+                    }
+                }
                 instance.stack.pop()?.get()?.finish()
             }
+        }
+
+        fun backToMain(whenIsMainPage: (activity: Activity) -> Unit = {}) {
+            back(pageCount = Int.MAX_VALUE, includeMainPage = false, whenIsMainPage)
         }
 
         fun current(): Activity? {

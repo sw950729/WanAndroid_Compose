@@ -1,6 +1,6 @@
 package com.silence.wanandroid.main.common
 
-import androidx.annotation.ColorInt
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Surface
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
+import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
 
@@ -34,6 +35,15 @@ fun <T> T.asLiveData(): MutableLiveData<T> {
 
 fun Boolean.selectColor(selectColor: Color, unSelectColor: Color): Color {
     return if (this) selectColor else unSelectColor
+}
+
+fun toastOnUI(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    Router.current()
+        ?.let {
+            it.runOnUiThread {
+                Toast.makeText(it, message, duration).show()
+            }
+        }
 }
 
 @Composable
@@ -76,6 +86,4 @@ fun TopAppBar(
             action()
         }
     }
-
-
 }

@@ -22,6 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import com.silence.wanandroid.MyApplication
+import com.silence.wanandroid.R
 import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
@@ -29,6 +31,7 @@ import com.silence.wanandroid.login.LoginActivity
 import com.silence.wanandroid.main.mine.FunctionItem
 import com.silence.wanandroid.main.mine.MineFunctionList
 import com.silence.wanandroid.main.mine.UserInfo
+import com.silence.wanandroid.main.mine.isLogin
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 /**
@@ -40,10 +43,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun MinePage() {
 
-    val userInfo = UserInfo()
-    val userState = mutableStateOf(userInfo)
-
-    UserPad(userInfo = userState.value)
+    UserPad(userInfo = MyApplication.getApp().userState().value)
     Column(
         modifier = Modifier
             .padding(
@@ -143,8 +143,10 @@ fun UserPad(userInfo: UserInfo) {
                 .width(SilenceSizes.mineUserAvatarHeight)
                 .height(SilenceSizes.mineUserAvatarHeight)
         ) {
+            val imageData: Any =
+                if (userInfo.icon == "") R.mipmap.ic_launcher else userInfo.icon
             CoilImage(
-                data = userInfo.icon,
+                data = imageData,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "avatar",
                 modifier = Modifier
@@ -165,14 +167,16 @@ fun UserPad(userInfo: UserInfo) {
         ) {
 
             Text(
-                text = userInfo.nickName,
+                text = if (userInfo.publicName.isEmpty()) "暂未登录" else userInfo.publicName,
                 style = TextStyle(
                     color = Color.White,
                     fontSize = SilenceSizes.textSize16,
                     fontFamily = FontFamily.Monospace
                 ),
                 modifier = Modifier.clickable {
-                    Router.rout(LoginActivity::class.java)
+                    if (!userInfo.isLogin()) {
+                        Router.rout(LoginActivity::class.java)
+                    }
                 }
             )
 

@@ -106,7 +106,7 @@ object RxNetWork {
         return Interceptor { chain ->
             val request = chain.request()
             val originalResponse = chain.proceed(request)
-            if (request.url.toString().contains("user/login")){
+            if (request.url.toString().contains("user/login")) {
                 val headers = originalResponse.headers("Set-Cookie")
                 if (headers.isNotEmpty()) {
                     val jsonArray = JsonArray()
@@ -137,7 +137,8 @@ object RxNetWork {
             Log.i("RxNetWork", "cookieStr: $cookieStr")
 
             if (cookieStr.isNotEmpty()) {
-                val cookies: JsonArray = Gson().fromJson(cookieStr, JsonArray::class.java)
+                val cookies: JsonArray =
+                    MyApplication.getApp().globalGson.fromJson(cookieStr, JsonArray::class.java)
                 Log.i("RxNetWork", " cookies.toString() = $cookies")
                 cookies.forEach {
                     builder.addHeader("Cookie", it.toString())

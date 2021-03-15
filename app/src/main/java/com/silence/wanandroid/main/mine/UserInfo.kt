@@ -7,7 +7,7 @@ data class UserInfo(
     var id: Long = -1,
     var token: String = "",
     var level: String = "-1",
-    var nickName: String = "暂未登录",
+    var nickName: String = "",
     var publicName: String = "",
     var rank: Long = -1,
     var integration: Long = -1,
@@ -18,24 +18,6 @@ data class UserInfo(
     var type: Int = 0,
 )
 
-fun UserInfo.logout(): UserInfo = this.let { info ->
-    info.id = -1
-    info.level = "-1"
-    info.nickName = "暂未登录"
-    info.rank = -1
-    info.integration = -1
-    info.icon = ""
-    info.userName = ""
-    return info
-}
-
-fun UserInfo.last(): UserInfo = this.let { info ->
-    info.id = 123
-    info.level = "-1"
-    info.nickName = "暂未登录"
-    info.rank = -1
-    info.integration = -1
-    info.icon = ""
-    info.userName = "zhangsan"
-    return info
+fun UserInfo.isLogin(): Boolean {
+    return this.id > 0
 }
