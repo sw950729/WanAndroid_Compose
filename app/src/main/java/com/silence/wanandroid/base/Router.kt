@@ -14,29 +14,22 @@ class Router private constructor() {
             val INSTANCE = Router()
         }
 
-        val instance = Holder.INSTANCE
+        private val instance = Holder.INSTANCE
+
+        fun attachSelf(className: String, ctx: Activity) {
+            instance.attachSelf(className, ctx)
+        }
+
+        fun detachSelf(className: String) {
+            instance.detachSelf(className)
+        }
 
         fun rout(from: Class<out Activity>, to: Class<out Activity>, bundle: Bundle = Bundle()) {
-            val weakReference = instance.routerMap[from.simpleName]
-            if (weakReference != null) {
-                val get = weakReference.get()
-                get?.startActivity(Intent(get, to))
-            }
+            instance.rout(from, to, bundle)
         }
 
         fun rout(to: Class<out Activity>, bundle: Bundle = Bundle()) {
-            val weakReference = instance.stack.peek()
-            if (weakReference != null) {
-                val get = weakReference.get()
-                if (get == null) {
-                    instance.stack.pop()
-                    rout(to, bundle)
-                    return
-                }
-                val intent = Intent(get, to)
-                intent.putExtras(bundle)
-                get.startActivity(intent)
-            }
+            instance.startActivity(current(), to, bundle)
         }
 
         fun back(
@@ -44,41 +37,89 @@ class Router private constructor() {
             includeMainPage: Boolean = true,
             whenIsMainPage: (activity: Activity) -> Unit = {}
         ) {
-            repeat(pageCount) {
-                if (instance.stack.size == 0) {
-                    return
-                }
-                if (instance.stack.size == 1) {
-                    instance.stack.peek().get()?.let { it1 -> whenIsMainPage(it1) }
-                    if (!includeMainPage) {
-                        return
-                    }
-                }
-                instance.stack.pop()?.get()?.finish()
-            }
+            instance.back(pageCount, includeMainPage, whenIsMainPage)
         }
 
         fun backToMain(whenIsMainPage: (activity: Activity) -> Unit = {}) {
-            back(pageCount = Int.MAX_VALUE, includeMainPage = false, whenIsMainPage)
+            back(Int.MAX_VALUE, false, whenIsMainPage)
         }
 
-        fun current(): Activity? {
-            return instance.stack.peek()?.get()
+        fun current(): Activity {
+            return instance.current()
         }
     }
 
     private val stack = Stack<WeakReference<Activity>>()
     private val routerMap = HashMap<String, WeakReference<Activity>>()
 
-    fun attachSelf(className: String, ctx: Activity) {
+    private fun attachSelf(className: String, ctx: Activity) {
         val weakReference = WeakReference(ctx)
         routerMap[className] = weakReference
         stack.push(weakReference)
     }
 
-    fun detachSelf(className: String) {
+    private fun detachSelf(className: String) {
         stack.remove(routerMap[className])
         routerMap.remove(className)
+    }
+
+    private fun current(): Activity {
+        if (stack.empty()) {
+            throw IllegalMonitorStateException("No such active context")
+        }
+        val weakReference = stack.peek()
+        if (weakReference != null) {
+            val activity = weakReference.get()
+            if (activity != null && !activity.isFinishing) {
+                return activity
+            }
+        }
+        stack.pop()
+        return current()
+    }
+
+    private fun startActivity(
+        from: Activity,
+        to: Class<out Activity>,
+        bundle: Bundle = Bundle()
+    ) {
+        val intent = Intent(from, to)
+        intent.putExtras(bundle)
+        from.startActivity(intent)
+    }
+
+    private fun rout(
+        from: Class<out Activity>,
+        to: Class<out Activity>,
+        bundle: Bundle = Bundle()
+    ) {
+        val weakReference = instance.routerMap[from.simpleName]
+        weakReference?.get()?.let {
+            if (it.isFinishing) {
+                startActivity(Companion.current(), to, bundle)
+            } else {
+                startActivity(it, to, bundle)
+            }
+        } ?: startActivity(Companion.current(), to, bundle)
+    }
+
+    private fun back(
+        pageCount: Int = 1,
+        includeMainPage: Boolean = true,
+        whenIsMainPage: (activity: Activity) -> Unit = {}
+    ) {
+        repeat(pageCount) {
+            if (stack.empty()) {
+                return
+            }
+            if (stack.size == 1) {
+                stack.peek().get()?.let { it1 -> whenIsMainPage(it1) }
+                if (!includeMainPage) {
+                    return
+                }
+            }
+            stack.pop()?.get()?.finish()
+        }
     }
 
 }

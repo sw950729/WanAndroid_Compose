@@ -21,13 +21,13 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("BaseActivity", "BaseActivity really is " + this.localClassName)
-        Router.instance.attachSelf(this.localClassName, this)
+        Router.attachSelf(this.localClassName, this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mCoroutine.destroy()
-        Router.instance.detachSelf(this.localClassName)
+        Router.detachSelf(this.localClassName)
     }
 
 }

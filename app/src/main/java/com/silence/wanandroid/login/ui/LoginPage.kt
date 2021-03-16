@@ -1,4 +1,4 @@
-package com.silence.wanandroid.login
+package com.silence.wanandroid.login.ui
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -35,6 +35,7 @@ import com.silence.wanandroid.compose.SilenceIcon
 import com.silence.wanandroid.compose.TopAppBar
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
+import com.silence.wanandroid.login.RegisterActivity
 import com.silence.wanandroid.main.common.asState
 import com.silence.wanandroid.main.common.selectColor
 import com.silence.wanandroid.main.common.toastOnUI
