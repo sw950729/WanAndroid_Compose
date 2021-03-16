@@ -18,7 +18,7 @@ import retrofit2.http.Query
 interface WanAndroidApi {
 
     @GET("banner/json")
-    suspend fun getHomeBanner(): BaseBean<BannerBean?>
+    suspend fun getHomeBanner(): BaseBean<MutableList<BannerBean>?>
 
     @GET("article/list/{page}/json")
     suspend fun getHomeArticle(@Path("page") page: Int): BaseBean<HomeArticleBean?>

@@ -2,6 +2,7 @@ package com.silence.wanandroid.main.home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.silence.wanandroid.base.BaseViewModel
+import com.silence.wanandroid.main.home.model.BannerBean
 import com.silence.wanandroid.main.home.model.HomeArticleBean
 import com.silence.wanandroid.net.RxNetWork
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel : BaseViewModel() {
 
     var homeArticleData = MutableLiveData<HomeArticleBean>()
+    var bannerData = MutableLiveData<MutableList<BannerBean>>()
 
     fun getHomeArticleList(page: Int) {
         mCoroutine.launch {
@@ -28,4 +30,11 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
+    fun getHomeBanner() {
+        mCoroutine.launch {
+            with(RxNetWork.getObserverHttps().getHomeBanner()) {
+                bannerData.postValue(data)
+            }
+        }
+    }
 }
