@@ -26,9 +26,9 @@ fun Boolean.selectColor(selectColor: Color, unSelectColor: Color): Color {
 fun CharSequence.toastOnUI() = toastOnUI(this)
 
 fun toastOnUI(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-    Router.current().let {
-        it.runOnUiThread {
-            Toast.makeText(it, message, duration).show()
+    with(Router.current()){
+        this.runOnUiThread {
+            Toast.makeText(this, message, duration).show()
         }
     }
 }

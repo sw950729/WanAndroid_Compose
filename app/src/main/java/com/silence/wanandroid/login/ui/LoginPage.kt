@@ -32,6 +32,8 @@ import com.silence.wanandroid.MyApplication
 import com.silence.wanandroid.R
 import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.compose.SilenceIcon
+import com.silence.wanandroid.compose.SilenceNormalInput
+import com.silence.wanandroid.compose.SilencePasswordInput
 import com.silence.wanandroid.compose.TopAppBar
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
@@ -166,169 +168,49 @@ fun AccountPasswordFormArea(
     ) -> Unit
 ) {
     val userName = userInfo?.value?.publicName ?: ""
-    var accountInputState by remember { TextFieldValue(userName).asState() }
-    var passwordInputState by remember { TextFieldValue("").asState() }
+    var account by remember { userName.asState() }
+    var password by remember { "".asState() }
+    var repeatPassword by remember { "".asState() }
 
-    var accountHasFocus by remember { false.asState() }
-    var passwordHasFocus by remember { false.asState() }
-
-    var passwordShowType by remember { false.asState() }
-
-    TextField(
-        value = accountInputState,
-        textStyle = TextStyle(fontSize = SilenceSizes.textSize16),
-        onValueChange = {
-            accountInputState = it
-        },
-        label = { Text(text = "登录名") },
-        placeholder = { Text(text = "请输入登录名") },
-        leadingIcon = {
-            SilenceIcon(
-                Icons.Filled.Person,
-                modifier = Modifier
-                    .size(SilenceSizes.padding25),
-                tint = accountHasFocus.selectColor(SilenceColors.colorMain, Color.Gray)
-            )
-        },
-        trailingIcon = {
-            if (accountInputState.text.isNotEmpty()) {
-                SilenceIcon(
-                    painter = painterResource(id = R.mipmap.clear),
-                    modifier = Modifier
-                        .size(SilenceSizes.padding25)
-                        .clickable {
-                            accountInputState = TextFieldValue("")
-                        },
-                    tint = accountHasFocus.selectColor(SilenceColors.colorMain, Color.Gray)
-                )
-            }
-        },
+    SilenceNormalInput(
+        labelText = "用户名",
+        placeholderText = "请输入用户名",
         modifier = Modifier
             .height(60.dp)
             .fillMaxWidth()
-            .onFocusChanged {
-                accountHasFocus =
-                    (it != FocusState.Disabled && it != FocusState.Inactive)
-                Log.i("LoginPage", "passwordHasFocus =$accountHasFocus")
-            },
-        colors = textFieldColors(
-            backgroundColor = Color.White
-        )
-    )
-
-    TextField(
-        value = passwordInputState,
-        keyboardOptions = if (passwordShowType) KeyboardOptions(keyboardType = KeyboardType.Text) else
-            KeyboardOptions(keyboardType = KeyboardType.Password),
-        visualTransformation = if (passwordShowType) VisualTransformation.None else PasswordVisualTransformation(),
-        textStyle = TextStyle(fontSize = 16.sp),
-        onValueChange = {
-            passwordInputState = it
-        },
-        label = { Text(text = "密码") },
-        placeholder = { Text(text = "请输入密码") },
-        leadingIcon = {
-            SilenceIcon(
-                Icons.Filled.Lock,
-                modifier = Modifier
-                    .size(SilenceSizes.padding25),
-                tint = passwordHasFocus.selectColor(SilenceColors.colorMain, Color.Gray)
-            )
-        },
-        trailingIcon = {
-            if (passwordInputState.text.isNotEmpty()) {
-                SilenceIcon(
-                    painter = if (passwordShowType) painterResource(R.mipmap.eyes_close) else painterResource(
-                        R.mipmap.eyes_open
-                    ),
-                    modifier = Modifier
-                        .size(SilenceSizes.padding25)
-                        .clickable {
-                            passwordShowType = !passwordShowType
-                        },
-                    tint = accountHasFocus.selectColor(SilenceColors.colorMain, Color.Gray)
-                )
-            }
-        },
+    ) {
+        account = it
+    }
+    SilencePasswordInput(
+        labelText = "密码",
+        placeholderText = "请输入密码",
         modifier = Modifier
             .height(60.dp)
             .fillMaxWidth()
-            .onFocusChanged {
-                passwordHasFocus =
-                    (it != FocusState.Disabled && it != FocusState.Inactive)
-                Log.i("LoginPage", "passwordHasFocus =$passwordHasFocus")
-            },
-        colors = textFieldColors(
-            backgroundColor = Color.White,
-        )
-    )
-
-    var repeatPasswordInputState by remember { TextFieldValue("").asState() }
+    ) {
+        password = it
+    }
 
     if (showRepeatPassword) {
-        var repeatPasswordHasFocus by remember { false.asState() }
-
-        var repeatPasswordShowType by remember { false.asState() }
-        TextField(
-            value = repeatPasswordInputState,
-            keyboardOptions = if (repeatPasswordShowType) KeyboardOptions(keyboardType = KeyboardType.Text) else
-                KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = if (repeatPasswordShowType) VisualTransformation.None else PasswordVisualTransformation(),
-            textStyle = TextStyle(fontSize = 16.sp),
-            onValueChange = {
-                repeatPasswordInputState = it
-            },
-            label = { Text(text = "确认密码") },
-            placeholder = { Text(text = "请输入密码") },
-            leadingIcon = {
-                SilenceIcon(
-                    Icons.Filled.Lock,
-                    modifier = Modifier
-                        .size(SilenceSizes.padding25),
-                    tint = repeatPasswordHasFocus.selectColor(SilenceColors.colorMain, Color.Gray)
-                )
-            },
-            trailingIcon = {
-                if (repeatPasswordInputState.text.isNotEmpty()) {
-                    SilenceIcon(
-                        painter = if (repeatPasswordShowType) painterResource(R.mipmap.eyes_close) else painterResource(
-                            R.mipmap.eyes_open
-                        ),
-                        modifier = Modifier
-                            .size(SilenceSizes.padding25)
-                            .clickable {
-                                repeatPasswordShowType = !repeatPasswordShowType
-                            },
-                        tint = repeatPasswordHasFocus.selectColor(
-                            SilenceColors.colorMain,
-                            Color.Gray
-                        )
-                    )
-                }
-            },
+        SilencePasswordInput(
+            labelText = "确认密码",
+            placeholderText = "请输入密码",
             modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth()
-                .onFocusChanged {
-                    repeatPasswordHasFocus =
-                        (it != FocusState.Disabled && it != FocusState.Inactive)
-                    Log.i("LoginPage", "passwordHasFocus =$repeatPasswordHasFocus")
-                },
-            colors = textFieldColors(
-                backgroundColor = Color.White,
-            )
-        )
+        ) {
+            repeatPassword = it
+        }
     }
 
     submitterComposable(
-        enable = accountInputState.text.isNotEmpty() && passwordInputState.text.isNotEmpty()
-                && (!showRepeatPassword || (showRepeatPassword && repeatPasswordInputState.text.isNotEmpty())),
-        loginName = accountInputState.text,
-        password = passwordInputState.text,
-        repeatPassword = repeatPasswordInputState.text
+        enable = account.isNotEmpty() && password.isNotEmpty()
+                && (!showRepeatPassword || (showRepeatPassword && repeatPassword.isNotEmpty())),
+        loginName = account,
+        password = password,
+        repeatPassword = repeatPassword
     )
 }
-
 
 @Composable
 fun LoginSubmitter(enable: Boolean = false, loginName: String, password: String) {
@@ -384,8 +266,14 @@ fun RegisterSubmitter(
             GlobalScope.launch {
                 with(RxNetWork.getObserverHttps().register(loginName, password, repeatPassword)) {
                     Log.i("RegisterPage", this.toString())
-                    toastOnUI(this.errorMsg)
-                    Router.back()
+                    if (0 == this.errorCode) {
+                        this.data?.let {
+                            toastOnUI("注册成功")
+                            Router.back()
+                        }
+                    } else {
+                        toastOnUI(this.errorMsg)
+                    }
                 }
             }
         }) {
