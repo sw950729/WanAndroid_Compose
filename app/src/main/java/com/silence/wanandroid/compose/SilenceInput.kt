@@ -110,7 +110,7 @@ fun SilencePasswordInput(
     text: String = "",
     labelText: String = "",
     placeholderText: String = "",
-    showTrailingIcon: Boolean = false,
+    showTrailingIcon: Boolean = true,
     textStyle: TextStyle = TextStyle(fontSize = SilenceSizes.textSize16),
     focusChange: ((hasFocus: Boolean) -> Unit)? = null,
     modifier: Modifier,

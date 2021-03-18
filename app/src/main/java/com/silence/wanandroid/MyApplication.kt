@@ -3,6 +3,7 @@ package com.silence.wanandroid
 import android.app.Application
 import androidx.compose.runtime.MutableState
 import com.google.gson.Gson
+import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.main.common.asState
 import com.silence.wanandroid.main.mine.UserInfo
 import com.silence.wanandroid.utils.SharedPreferencesUtil
@@ -25,6 +26,7 @@ class MyApplication : Application() {
                 currentUserInfo.value = userInfo
             }
         }
+        Router.attachActivityLifecycleCallback()
     }
 
     companion object {

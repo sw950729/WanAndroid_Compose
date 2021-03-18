@@ -3,6 +3,8 @@ package com.silence.wanandroid.base
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.silence.wanandroid.MyApplication
+import com.silence.wanandroid.utils.MyActivityLifecycleCallback
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.HashMap
@@ -16,12 +18,8 @@ class Router private constructor() {
 
         private val instance = Holder.INSTANCE
 
-        fun attachSelf(className: String, ctx: Activity) {
-            instance.attachSelf(className, ctx)
-        }
-
-        fun detachSelf(className: String) {
-            instance.detachSelf(className)
+        fun attachActivityLifecycleCallback() {
+            instance.attachActivityLifecycleCallback()
         }
 
         fun rout(from: Class<out Activity>, to: Class<out Activity>, bundle: Bundle = Bundle()) {
@@ -49,33 +47,25 @@ class Router private constructor() {
         }
     }
 
-    private val stack = Stack<WeakReference<Activity>>()
-    private val routerMap = HashMap<String, WeakReference<Activity>>()
+    private var activityStack: MyActivityLifecycleCallback? = null
 
-    private fun attachSelf(className: String, ctx: Activity) {
-        val weakReference = WeakReference(ctx)
-        routerMap[className] = weakReference
-        stack.push(weakReference)
+    fun attachActivityLifecycleCallback() {
+        if (activityStack == null) {
+            activityStack = MyActivityLifecycleCallback()
+            MyApplication.getApp().registerActivityLifecycleCallbacks(activityStack)
+        }
     }
 
-    private fun detachSelf(className: String) {
-        stack.remove(routerMap[className])
-        routerMap.remove(className)
+    private fun getActivityStack(): MyActivityLifecycleCallback {
+        return activityStack ?: let {
+            val myActivityLifecycleCallback = MyActivityLifecycleCallback()
+            MyApplication.getApp().registerActivityLifecycleCallbacks(myActivityLifecycleCallback)
+            myActivityLifecycleCallback
+        }
     }
 
     private fun current(): Activity {
-        if (stack.empty()) {
-            throw IllegalMonitorStateException("No such active context")
-        }
-        val weakReference = stack.peek()
-        if (weakReference != null) {
-            val activity = weakReference.get()
-            if (activity != null && !activity.isFinishing) {
-                return activity
-            }
-        }
-        stack.pop()
-        return current()
+        return getActivityStack().current()
     }
 
     private fun startActivity(
@@ -93,14 +83,7 @@ class Router private constructor() {
         to: Class<out Activity>,
         bundle: Bundle = Bundle()
     ) {
-        val weakReference = instance.routerMap[from.simpleName]
-        weakReference?.get()?.let {
-            if (it.isFinishing) {
-                startActivity(Companion.current(), to, bundle)
-            } else {
-                startActivity(it, to, bundle)
-            }
-        } ?: startActivity(Companion.current(), to, bundle)
+        startActivity(getActivityStack().getActivity(from.simpleName), to, bundle)
     }
 
     private fun back(
@@ -108,18 +91,7 @@ class Router private constructor() {
         includeMainPage: Boolean = true,
         whenIsMainPage: (activity: Activity) -> Unit = {}
     ) {
-        repeat(pageCount) {
-            if (stack.empty()) {
-                return
-            }
-            if (stack.size == 1) {
-                stack.peek().get()?.let { it1 -> whenIsMainPage(it1) }
-                if (!includeMainPage) {
-                    return
-                }
-            }
-            stack.pop()?.get()?.finish()
-        }
+        getActivityStack().back(pageCount, includeMainPage, whenIsMainPage)
     }
 
 }

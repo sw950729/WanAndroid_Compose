@@ -17,10 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.silence.wanandroid.MyApplication
 import com.silence.wanandroid.base.Router
-import com.silence.wanandroid.compose.SilenceIcon
-import com.silence.wanandroid.compose.SilenceNormalInput
-import com.silence.wanandroid.compose.SilencePasswordInput
-import com.silence.wanandroid.compose.TopAppBar
+import com.silence.wanandroid.compose.*
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.login.RegisterActivity
@@ -200,34 +197,33 @@ fun AccountPasswordFormArea(
 @Composable
 fun LoginSubmitter(enable: Boolean = false, loginName: String, password: String) {
     Log.i("LoginPage", "enable = $enable，用户名：$loginName , 密码：$password")
-    Button(enabled = enable,
-        modifier = Modifier
+    OnceClickButton(
+        enable = enable,
+        content = {
+            Text(
+                text = "登录",
+                style = TextStyle(color = Color.White, fontSize = SilenceSizes.textSize16)
+            )
+        }, modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 24.dp),
-        colors = buttonColors(
-            backgroundColor = SilenceColors.colorMain,
-            disabledBackgroundColor = Color.Gray
-        ), onClick = {
-            Log.i("LoginPage", "点击了登录，用户名：$loginName , 密码：$password")
-            GlobalScope.launch {
-                with(RxNetWork.getObserverHttps().loginByPassword(loginName, password)) {
-                    Log.i("LoginPage", this.toString())
-                    if (0 == this.errorCode) {
-                        this.data?.let {
-                            MyApplication.getApp().updateUser(it)
-                            toastOnUI("登陆成功")
-                            Router.back()
-                        }
-                    } else {
-                        toastOnUI(this.errorMsg)
+            .padding(top = 24.dp)
+    ) { enableButton ->
+        Log.i("LoginPage", "点击了登录，用户名：$loginName , 密码：$password")
+        GlobalScope.launch {
+            with(RxNetWork.getObserverHttps().loginByPassword(loginName, password)) {
+                Log.i("LoginPage", this.toString())
+                if (0 == this.errorCode) {
+                    this.data?.let {
+                        MyApplication.getApp().updateUser(it)
+                        toastOnUI("登录成功")
+                        Router.back()
                     }
+                } else {
+                    toastOnUI(this.errorMsg)
+                    enableButton()
                 }
             }
-        }) {
-        Text(
-            text = "登录",
-            style = TextStyle(color = Color.White, fontSize = SilenceSizes.textSize16)
-        )
+        }
     }
 }
 
@@ -239,32 +235,31 @@ fun RegisterSubmitter(
     repeatPassword: String
 ) {
     Log.i("RegisterPage", "enable = $enable，用户名：$loginName , 密码：$password")
-    Button(enabled = enable,
-        modifier = Modifier
+    OnceClickButton(
+        enable = enable,
+        content = {
+            Text(
+                text = "注册",
+                style = TextStyle(color = Color.White, fontSize = SilenceSizes.textSize16)
+            )
+        }, modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 24.dp),
-        colors = buttonColors(
-            backgroundColor = SilenceColors.colorMain,
-            disabledBackgroundColor = Color.Gray
-        ), onClick = {
-            Log.i("RegisterPage", "点击了注册，用户名：$loginName , 密码：$password")
-            GlobalScope.launch {
-                with(RxNetWork.getObserverHttps().register(loginName, password, repeatPassword)) {
-                    Log.i("RegisterPage", this.toString())
-                    if (0 == this.errorCode) {
-                        this.data?.let {
-                            toastOnUI("注册成功")
-                            Router.back()
-                        }
-                    } else {
-                        toastOnUI(this.errorMsg)
+            .padding(top = 24.dp)
+    ) { enableButton ->
+        Log.i("RegisterPage", "点击了注册，用户名：$loginName , 密码：$password")
+        GlobalScope.launch {
+            with(RxNetWork.getObserverHttps().register(loginName, password, repeatPassword)) {
+                Log.i("RegisterPage", this.toString())
+                if (0 == this.errorCode) {
+                    this.data?.let {
+                        toastOnUI("注册成功")
+                        Router.back()
                     }
+                } else {
+                    toastOnUI(this.errorMsg)
+                    enableButton()
                 }
             }
-        }) {
-        Text(
-            text = "注册",
-            style = TextStyle(color = Color.White, fontSize = SilenceSizes.textSize16)
-        )
+        }
     }
 }
