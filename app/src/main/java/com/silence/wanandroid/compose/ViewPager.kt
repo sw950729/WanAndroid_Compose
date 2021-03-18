@@ -27,7 +27,7 @@ import kotlin.math.*
 fun rememberPagerState(
     currentPage: Int = 0,
     minPage: Int = 0,
-    maxPage: Int = 0,
+    maxPage: Int? = 0,
 ): PagerState {
     return rememberSaveable(
         saver = PagerState.Saver(),
@@ -39,7 +39,7 @@ fun rememberPagerState(
 class PagerState(
     currentPage: Int = 0,
     minPage: Int = 0,
-    maxPage: Int = 0,
+    maxPage: Int? = 0,
 ) {
     private val velocityTracker = VelocityTracker()
 
@@ -60,13 +60,13 @@ class PagerState(
     var minPage: Int
         get() = _minPage
         set(value) {
-            _minPage = value.coerceAtMost(_maxPage)
+            _minPage = value.coerceAtMost(_maxPage ?: 0)
             _currentPage = _currentPage.coerceIn(_minPage, _maxPage)
         }
 
     private var _maxPage by mutableStateOf(maxPage, structuralEqualityPolicy())
     var maxPage: Int
-        get() = _maxPage
+        get() = _maxPage ?: 0
         set(value) {
             _maxPage = value.coerceAtLeast(_minPage)
             _currentPage = _currentPage.coerceIn(_minPage, maxPage)

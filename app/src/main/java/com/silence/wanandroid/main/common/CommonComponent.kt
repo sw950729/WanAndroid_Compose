@@ -7,10 +7,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import com.silence.wanandroid.base.Router
 
-class CommonComponent {
-}
-
-
 fun <T> T.asState(): MutableState<T> {
     return mutableStateOf(this)
 }
@@ -26,7 +22,7 @@ fun Boolean.selectColor(selectColor: Color, unSelectColor: Color): Color {
 fun CharSequence.toastOnUI() = toastOnUI(this)
 
 fun toastOnUI(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-    with(Router.current()){
+    with(Router.current()) {
         this.runOnUiThread {
             Toast.makeText(this, message, duration).show()
         }

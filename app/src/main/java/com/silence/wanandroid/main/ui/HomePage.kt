@@ -42,22 +42,18 @@ fun HomePage() {
                 tint = Color.White
             )
         })
-
-        LazyColumn {
-            item {
-                ViewPager(
-                    state = pagerState,
-                    maxSize = banner.value?.size,
-                    maxHeight = (SilenceSizes.padding200)
-                ) {
-                    banner.value?.get(it)?.let { it1 ->
-                        CoilImage(
-                            data = it1.imagePath, null,
-                        )
-                    }
-                }
+        ViewPager(
+            state = pagerState,
+            maxSize = banner.value?.size,
+            maxHeight = (SilenceSizes.padding200)
+        ) {
+            banner.value?.get(it)?.let { it1 ->
+                CoilImage(
+                    data = it1.imagePath, null,
+                )
             }
-
+        }
+        LazyColumn {
             list.value?.datas?.forEach {
                 item {
                     ArticleListItem(it)

@@ -29,9 +29,6 @@ import com.silence.wanandroid.login.ui.LoginSubmitter
 import com.silence.wanandroid.main.common.asState
 import com.silence.wanandroid.main.common.selectColor
 
-class SilenceInput {
-}
-
 @Composable
 fun SilenceNormalInput(
     text: String = "",
