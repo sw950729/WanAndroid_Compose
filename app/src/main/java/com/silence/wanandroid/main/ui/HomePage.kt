@@ -1,6 +1,8 @@
 package com.silence.wanandroid.main.ui
 
 import ViewPager
+import android.os.Bundle
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,12 +13,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.compose.SilenceIcon
-import com.silence.wanandroid.compose.TopAppBar
+import com.silence.wanandroid.compose.SilenceTopAppBar
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.config.SilenceStrings
 import com.silence.wanandroid.main.home.ui.ArticleListItem
 import com.silence.wanandroid.main.home.viewmodel.HomeViewModel
+import com.silence.wanandroid.web.WebActivity
 import dev.chrisbanes.accompanist.coil.CoilImage
 import rememberPagerState
 
@@ -35,7 +39,7 @@ fun HomePage() {
     homeViewModel.getHomeArticleList(0)
     homeViewModel.getHomeBanner()
     Column {
-        TopAppBar(SilenceStrings.bottomHomeTitle, action = {
+        SilenceTopAppBar(SilenceStrings.bottomHomeTitle, showBack = false, action = {
             SilenceIcon(
                 Icons.Filled.Search,
                 modifier = Modifier.padding(end = SilenceSizes.padding4),
@@ -56,7 +60,14 @@ fun HomePage() {
         LazyColumn {
             list.value?.datas?.forEach {
                 item {
-                    ArticleListItem(it)
+                    ArticleListItem(it, modifier = Modifier.clickable {
+                        val bundle = Bundle()
+                        bundle.putString(WebActivity.WEB_URL, it.link)
+                        bundle.putString(WebActivity.WEB_TITLE, it.title)
+                        bundle.putBoolean(WebActivity.WEB_ICON_SHOW, true)
+                        bundle.putBoolean(WebActivity.WEB_ICON_COLLECT, it.collect)
+                        Router.rout(WebActivity::class.java, bundle)
+                    })
                 }
             }
         }

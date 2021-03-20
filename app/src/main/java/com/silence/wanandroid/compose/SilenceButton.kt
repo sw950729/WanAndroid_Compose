@@ -12,8 +12,6 @@ import androidx.compose.ui.graphics.Color
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.main.common.asState
 
-class SilenceButton {
-}
 
 /**
  * 仅可点击一次，需手动恢复可点状态
@@ -25,7 +23,7 @@ fun OnceClickButton(
         backgroundColor = SilenceColors.colorMain,
         disabledBackgroundColor = Color.Gray
     ),
-    content:@Composable ()->Unit,
+    content: @Composable () -> Unit,
     modifier: Modifier,
     onClick: (enableButton: () -> Unit) -> Unit = {}
 ) {

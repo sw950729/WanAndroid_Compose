@@ -2,7 +2,7 @@ package com.silence.wanandroid.compose
 
 import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -10,7 +10,10 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
@@ -21,11 +24,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.silence.wanandroid.R
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
-import com.silence.wanandroid.login.ui.LoginSubmitter
 import com.silence.wanandroid.main.common.asState
 import com.silence.wanandroid.main.common.selectColor
 
@@ -97,11 +98,9 @@ fun SilenceNormalInput(
             .onFocusChanged {
                 accountHasFocus =
                     (it != FocusState.Disabled && it != FocusState.Inactive)
-                Log.i("LoginPage", "passwordHasFocus =$accountHasFocus")
                 focusChange?.let { it(accountHasFocus) }
             }
     )
-
 }
 
 
@@ -175,7 +174,6 @@ fun SilencePasswordInput(
             .onFocusChanged {
                 passwordHasFocus =
                     (it != FocusState.Disabled && it != FocusState.Inactive)
-                Log.i("LoginPage", "passwordHasFocus =$passwordHasFocus")
                 focusChange?.let { it(passwordHasFocus) }
             },
         colors = TextFieldDefaults.textFieldColors(

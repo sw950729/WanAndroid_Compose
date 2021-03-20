@@ -26,8 +26,8 @@ import com.silence.wanandroid.main.home.model.ArticleListBean
  * @describe:
  **/
 @Composable
-fun ArticleListItem(articleListBean: ArticleListBean) {
-    Box(modifier = Modifier.padding(SilenceSizes.padding10)) {
+fun ArticleListItem(articleListBean: ArticleListBean,modifier: Modifier) {
+    Box(modifier = modifier.padding(SilenceSizes.padding10)) {
         Card(
             shape = RoundedCornerShape(SilenceSizes.padding4),
             backgroundColor = Color.White,

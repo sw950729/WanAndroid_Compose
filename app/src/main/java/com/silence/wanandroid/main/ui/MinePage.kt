@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -24,13 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.silence.wanandroid.MyApplication
 import com.silence.wanandroid.R
 import com.silence.wanandroid.base.Router
+import com.silence.wanandroid.compose.SilenceIcon
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.login.LoginActivity
 import com.silence.wanandroid.main.mine.FunctionItem
 import com.silence.wanandroid.main.mine.MineFunctionList
-import com.silence.wanandroid.main.mine.UserInfo
-import com.silence.wanandroid.main.mine.isLogin
+import com.silence.wanandroid.main.mine.model.UserInfo
+import com.silence.wanandroid.main.mine.model.isLogin
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 /**
@@ -115,9 +115,8 @@ fun MineFunctionItem(functionItem: FunctionItem) {
                 style = TextStyle(color = Color.Black, fontSize = SilenceSizes.textSize14),
                 modifier = Modifier.padding(start = SilenceSizes.mineContentStartPadding)
             )
-            Icon(
+            SilenceIcon(
                 Icons.Filled.KeyboardArrowRight,
-                contentDescription = "",
                 modifier = Modifier.size(SilenceSizes.padding26)
             )
         }

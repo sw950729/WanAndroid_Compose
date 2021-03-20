@@ -150,10 +150,10 @@ fun ViewPager(
     modifier: Modifier = Modifier,
     state: PagerState,
     maxSize: Int? = 0,
-    maxHeight: Dp,
+    maxHeight: Dp? = null,
     offscreenLimit: Int = 2,
     dragEnabled: Boolean = true,
-    pageContent: @Composable (Int) -> Unit
+    pageContent: @Composable (Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     var pageSize by remember { mutableStateOf(0) }
@@ -207,7 +207,7 @@ fun ViewPager(
                 }
             }
     ) { measurables, constraints ->
-        layout(constraints.maxWidth, maxHeight.toPx().toInt()) {
+        layout(constraints.maxWidth, maxHeight?.toPx()?.toInt() ?: constraints.maxHeight) {
             val currentPage = state.currentPage
             val offset = state.currentPageOffset
             measurables

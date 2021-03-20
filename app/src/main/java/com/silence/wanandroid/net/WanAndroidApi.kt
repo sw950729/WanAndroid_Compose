@@ -2,7 +2,7 @@ package com.silence.wanandroid.net
 
 import com.silence.wanandroid.main.home.model.BannerBean
 import com.silence.wanandroid.main.home.model.HomeArticleBean
-import com.silence.wanandroid.main.mine.UserInfo
+import com.silence.wanandroid.main.mine.model.UserInfo
 import com.silence.wanandroid.net.model.BaseBean
 import retrofit2.http.GET
 import retrofit2.http.POST

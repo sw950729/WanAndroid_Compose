@@ -1,4 +1,4 @@
-package com.silence.wanandroid.main.mine
+package com.silence.wanandroid.main.mine.model
 
 import com.silence.wanandroid.net.Empty
 

@@ -5,7 +5,7 @@ import androidx.compose.runtime.MutableState
 import com.google.gson.Gson
 import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.main.common.asState
-import com.silence.wanandroid.main.mine.UserInfo
+import com.silence.wanandroid.main.mine.model.UserInfo
 import com.silence.wanandroid.utils.SharedPreferencesUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class MyApplication : Application() {
         globalGson = Gson()
         GlobalScope.launch {
             val userInfoStr = SharedPreferencesUtil.getInstance().getString("userInfo")
-            if (userInfoStr.isNotEmpty()){
+            if (userInfoStr.isNotEmpty()) {
                 val userInfo = globalGson.fromJson(userInfoStr, UserInfo::class.java)
                 currentUserInfo.value = userInfo
             }
@@ -30,7 +30,7 @@ class MyApplication : Application() {
     }
 
     companion object {
-       private var mApp: MyApplication? = null
+        private var mApp: MyApplication? = null
 
         fun getApp(): MyApplication {
             return mApp ?: throw IllegalStateException("You Must To Wait Application Init")
