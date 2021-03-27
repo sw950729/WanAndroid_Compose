@@ -11,11 +11,11 @@ object DataUtils {
         str = str.replace("&ldquo;".toRegex(), "\"")
         str = str.replace("&rdquo;".toRegex(), "\"")
         str = str.replace("&quot;".toRegex(), "\"")
-        str = str.replace("&mdash;".toRegex(), "\"—")
-        str = str.replace("&amp;".toRegex(), "\"&")
-        str = str.replace("&middot;".toRegex(), "\"·")
-        str = str.replace("&gt;".toRegex(), "\">")
-        str = str.replace("&hellip;".toRegex(), "\".\".\".")
+        str = str.replace("&mdash;".toRegex(), "—")
+        str = str.replace("&amp;".toRegex(), "&")
+        str = str.replace("&middot;".toRegex(), "·")
+        str = str.replace("&gt;".toRegex(), ">")
+        str = str.replace("&hellip;".toRegex(), "…")
         return str
     }
 }

@@ -3,6 +3,7 @@ package com.silence.wanandroid.net
 import com.silence.wanandroid.main.home.model.BannerBean
 import com.silence.wanandroid.main.home.model.HomeArticleBean
 import com.silence.wanandroid.main.mine.model.UserInfo
+import com.silence.wanandroid.main.project.model.ChildrenBean
 import com.silence.wanandroid.main.project.model.ProjectBean
 import com.silence.wanandroid.net.model.BaseBean
 import retrofit2.http.GET
@@ -39,4 +40,7 @@ interface WanAndroidApi {
 
     @GET("/article/listproject/{page}/json")
     suspend fun getProjectArticle(@Path("page") page: Int): BaseBean<ProjectBean?>
+
+    @GET("/project/tree/json")
+    suspend fun getProjectTree(): BaseBean<List<ChildrenBean>?>
 }

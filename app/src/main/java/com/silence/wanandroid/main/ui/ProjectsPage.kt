@@ -3,13 +3,13 @@ package com.silence.wanandroid.main.ui
 import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -17,12 +17,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.silence.wanandroid.base.Router
+import com.silence.wanandroid.compose.FlowLayout
 import com.silence.wanandroid.compose.TextTabLayoutComponent
+import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.config.SilenceStrings
 import com.silence.wanandroid.main.project.ui.ProjectItem
 import com.silence.wanandroid.main.project.viewmodel.ProjectViewModel
+import com.silence.wanandroid.utils.DataUtils
 import com.silence.wanandroid.web.WebActivity
 
 /**
@@ -35,8 +39,10 @@ import com.silence.wanandroid.web.WebActivity
 fun ProjectsPage() {
     val projectViewModel = ProjectViewModel()
     val list = projectViewModel.projectData.observeAsState()
+    val projectTree = projectViewModel.projectTree.observeAsState()
     val selectItem = remember { mutableStateOf(0) }
     projectViewModel.getProjectArticleList(0)
+    projectViewModel.getProjectTree()
     val title = ArrayList<String>()
     title.add(SilenceStrings.lastNewProjects)
     title.add(SilenceStrings.projectsType)
@@ -78,6 +84,30 @@ fun ProjectsPage() {
                     }
                 }
             }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 12.dp, end = 8.dp)
+            ) {
+                FlowLayout(
+                    datas = projectTree.value,
+                ) {
+                    Text(
+                        text = DataUtils.replaceAll(it.name),
+                        color = SilenceColors.random(),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(start = 4.dp, top = 10.dp, end = 4.dp, bottom = 10.dp)
+                            .background(
+                                color = SilenceColors.color_ef,
+                                shape = CircleShape
+                            )
+                            .padding(start = 12.dp, end = 12.dp, top = 5.dp, bottom = 5.dp)
+                    )
+                }
+            }
         }
     }
 }
+

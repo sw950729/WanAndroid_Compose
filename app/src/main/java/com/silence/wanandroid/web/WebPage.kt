@@ -2,6 +2,7 @@ package com.silence.wanandroid.web
 
 import android.graphics.Bitmap
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.clickable
@@ -19,6 +20,16 @@ import androidx.compose.ui.zIndex
 import com.silence.wanandroid.compose.SilenceIcon
 import com.silence.wanandroid.compose.SilenceTopAppBar
 import com.silence.wanandroid.config.SilenceSizes
+import androidx.core.content.ContextCompat.startActivity
+
+import android.content.Intent
+import android.net.Uri
+import android.view.KeyEvent
+import android.view.View
+import com.silence.wanandroid.base.Router
+import com.silence.wanandroid.main.common.toastOnUI
+import java.lang.Exception
+
 
 /**
  * @date:2021/3/20
@@ -97,6 +108,16 @@ fun WebView(
                         it.addJavascriptInterface(item.value, item.key)
                     }
                     config.invoke(it)
+                    it.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN) {
+                            if (keyCode == KeyEvent.KEYCODE_BACK && it.canGoBack()) {
+                                //表示按返回键时的操作
+                                it.goBack()
+                                return@OnKeyListener true
+                            }
+                        }
+                        false
+                    })
                     it.loadUrl(url)
                 }
             },
@@ -115,6 +136,38 @@ private class ComposeWebViewClient(
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         pageStarted?.invoke(view, url)
+    }
+
+    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        try {
+            if (request?.url?.scheme?.startsWith("http") == false) {
+                // 如需支持scheme跳转，可使用以下实现
+//                val intent = Intent(Intent.ACTION_VIEW,request.url)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                Router.current().startActivity(intent)
+                toastOnUI("禁止跳转第三方App")
+                return true
+            }
+        } catch (e: Exception) {
+            return true
+        }
+        return super.shouldOverrideUrlLoading(view, request)
+    }
+
+    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        try {
+            if (url?.startsWith("http") == false) {
+                // 如需支持scheme跳转，可使用以下实现
+//                val intent = Intent(Intent.ACTION_VIEW,Uri.parse(url))
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                Router.current().startActivity(intent)
+                toastOnUI("禁止跳转第三方App")
+                return true
+            }
+        } catch (e: Exception) {
+            return true
+        }
+        return super.shouldOverrideUrlLoading(view, url)
     }
 }
 
