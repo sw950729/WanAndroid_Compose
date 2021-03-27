@@ -52,5 +52,7 @@ object SilenceSizes {
     val padding26 = 26.dp
     val padding30 = 30.dp
     val padding50 = 50.dp
+    val padding90 = 90.dp
+    val padding120 = 120.dp
     val padding200 = 200.dp
 }

@@ -19,6 +19,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.main.home.model.ArticleListBean
+import com.silence.wanandroid.utils.DataUtils
 
 /**
  * @date:2021/3/12
@@ -26,7 +27,7 @@ import com.silence.wanandroid.main.home.model.ArticleListBean
  * @describe:
  **/
 @Composable
-fun ArticleListItem(articleListBean: ArticleListBean,modifier: Modifier) {
+fun ArticleListItem(articleListBean: ArticleListBean, modifier: Modifier) {
     Box(modifier = modifier.padding(SilenceSizes.padding10)) {
         Card(
             shape = RoundedCornerShape(SilenceSizes.padding4),
@@ -39,8 +40,9 @@ fun ArticleListItem(articleListBean: ArticleListBean,modifier: Modifier) {
                     .fillMaxWidth()
             ) {
                 val (title, image, author, time) = createRefs()
-                Text(
-                    articleListBean.title,
+                Text(DataUtils.replaceAll(
+                    articleListBean.title
+                ),
                     fontSize = SilenceSizes.textSize16,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.constrainAs(title) {
