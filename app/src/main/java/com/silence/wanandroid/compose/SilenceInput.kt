@@ -1,6 +1,5 @@
 package com.silence.wanandroid.compose
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -96,8 +95,8 @@ fun SilenceNormalInput(
         ),
         modifier = modifier
             .onFocusChanged {
-                accountHasFocus =
-                    (it != FocusState.Disabled && it != FocusState.Inactive)
+//                accountHasFocus =
+//                    (it != FocusState.Disabled && it != FocusState.Inactive)
                 focusChange?.let { it(accountHasFocus) }
             }
     )
@@ -172,8 +171,8 @@ fun SilencePasswordInput(
         },
         modifier = modifier
             .onFocusChanged {
-                passwordHasFocus =
-                    (it != FocusState.Disabled && it != FocusState.Inactive)
+//                passwordHasFocus =
+//                    (it != FocusState.Disabled && it != FocusState.Inactive)
                 focusChange?.let { it(passwordHasFocus) }
             },
         colors = TextFieldDefaults.textFieldColors(
