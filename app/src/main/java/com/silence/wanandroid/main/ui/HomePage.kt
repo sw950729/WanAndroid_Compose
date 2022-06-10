@@ -1,20 +1,22 @@
 package com.silence.wanandroid.main.ui
 
 import ViewPager
-import android.os.Bundle
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import com.silence.wanandroid.base.Router
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
 import com.silence.wanandroid.compose.SilenceIcon
 import com.silence.wanandroid.compose.SilenceTopAppBar
 import com.silence.wanandroid.config.SilenceSizes
@@ -22,8 +24,6 @@ import com.silence.wanandroid.config.SilenceStrings
 import com.silence.wanandroid.main.common.toWeb
 import com.silence.wanandroid.main.home.ui.ArticleListItem
 import com.silence.wanandroid.main.home.viewmodel.HomeViewModel
-import com.silence.wanandroid.web.WebActivity
-import dev.chrisbanes.accompanist.coil.CoilImage
 import rememberPagerState
 
 /**
@@ -55,12 +55,15 @@ fun HomePage() {
             modifier = Modifier.height(SilenceSizes.padding200)
         ) {
             banner.value?.get(it)?.let { it1 ->
-                CoilImage(
-                    data = it1.imagePath, null,
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.fillMaxSize().clickable {
-                        it1.toWeb()
-                    }
+                Image(
+                    painter = rememberImagePainter(
+                        data = it1.imagePath,
+                        onExecute = ImagePainter.ExecuteCallback.Default
+                    ), contentDescription = null, modifier = Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            it1.toWeb()
+                        }
                 )
             }
         }

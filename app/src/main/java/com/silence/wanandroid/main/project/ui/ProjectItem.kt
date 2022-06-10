@@ -1,5 +1,6 @@
 package com.silence.wanandroid.main.project.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -11,10 +12,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import com.silence.wanandroid.config.SilenceSizes
 import com.silence.wanandroid.main.project.model.ProjectListItem
 import com.silence.wanandroid.utils.DataUtils
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 /**
  * @date:2021/3/27
@@ -35,8 +38,16 @@ fun ProjectItem(projectListItem: ProjectListItem, modifier: Modifier) {
                     .fillMaxWidth()
             ) {
                 val (image, title, desc, time) = createRefs()
-                CoilImage(
-                    data = projectListItem.envelopePic, null,
+                Image(
+                    painter = rememberImagePainter(
+                        data = projectListItem.envelopePic,
+                        builder = {
+                            transformations(
+                                RoundedCornersTransformation(3f)
+                            )
+                        },
+                        onExecute = ImagePainter.ExecuteCallback.Default
+                    ), contentDescription = null,
                     modifier = Modifier
                         .width(SilenceSizes.padding90)
                         .height(SilenceSizes.padding120)
@@ -44,6 +55,12 @@ fun ProjectItem(projectListItem: ProjectListItem, modifier: Modifier) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                         }
+                        .padding(
+                            SilenceSizes.padding0,
+                            SilenceSizes.padding0,
+                            SilenceSizes.padding8,
+                            SilenceSizes.padding0
+                        )
                 )
                 Text(
                     DataUtils.replaceAll(projectListItem.title),
