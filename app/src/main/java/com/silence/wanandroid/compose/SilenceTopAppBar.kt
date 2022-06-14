@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.silence.wanandroid.base.Router
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
@@ -26,6 +27,7 @@ import com.silence.wanandroid.config.SilenceSizes
  **/
 
 @Composable
+@Preview
 fun SilenceTopAppBar(
     title: String = "",
     showBack: Boolean = true,

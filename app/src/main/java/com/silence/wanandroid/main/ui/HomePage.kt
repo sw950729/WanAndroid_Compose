@@ -48,28 +48,28 @@ fun HomePage() {
                 tint = Color.White
             )
         })
-        ViewPager(
-            state = pagerState,
-            maxSize = banner.value?.size,
-            maxHeight = (SilenceSizes.padding200),
-            modifier = Modifier.height(SilenceSizes.padding200)
-        ) {
-            banner.value?.get(it)?.let { it1 ->
-                Image(
-                    painter = rememberImagePainter(
-                        data = it1.imagePath,
-                        onExecute = ImagePainter.ExecuteCallback.Default
-                    ), contentDescription = null, modifier = Modifier
-                        .fillMaxSize()
-                        .clickable {
-                            it1.toWeb()
-                        }
-                )
-            }
-        }
         LazyColumn {
-            list.value?.datas?.forEach {
-                item {
+            item {
+                ViewPager(
+                    state = pagerState,
+                    maxSize = banner.value?.size,
+                    maxHeight = (SilenceSizes.padding200),
+                    modifier = Modifier.height(SilenceSizes.padding200)
+                ) {
+                    banner.value?.get(it)?.let { it1 ->
+                        Image(
+                            painter = rememberImagePainter(
+                                data = it1.imagePath,
+                                onExecute = ImagePainter.ExecuteCallback.Default
+                            ), contentDescription = null, modifier = Modifier
+                                .fillMaxSize()
+                                .clickable {
+                                    it1.toWeb()
+                                }
+                        )
+                    }
+                }
+                list.value?.datas?.forEach {
                     ArticleListItem(it, modifier = Modifier.clickable {
                         it.toWeb()
                     })
