@@ -36,7 +36,6 @@ class SplashActivity : AppCompatActivity() {
     }
 }
 
-
 @Preview
 @Composable
 fun SplashView() {

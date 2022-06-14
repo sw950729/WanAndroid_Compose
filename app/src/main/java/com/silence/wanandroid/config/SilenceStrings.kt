@@ -11,4 +11,6 @@ object SilenceStrings {
     const val bottomNavigationTitle = "导航"
     const val bottomProjectTitle = "项目"
     const val bottomMineTitle = "我的"
+    const val lastNewProjects = "最新项目"
+    const val projectsType = "项目分类"
 }

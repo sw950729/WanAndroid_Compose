@@ -4,7 +4,7 @@ import com.silence.wanandroid.R
 
 class FunctionItem(
     var iconSource: Int = R.mipmap.silence_mine_icon,
-    var title: String = "测试内容",
+    var title: String = "",
     var subTitle: String = "",
     var arrowText: String = "",
     var onClick: () -> Unit

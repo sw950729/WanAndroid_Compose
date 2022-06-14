@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,14 +20,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
+import com.silence.wanandroid.MyApplication
+import com.silence.wanandroid.R
+import com.silence.wanandroid.base.Router
+import com.silence.wanandroid.compose.SilenceIcon
 import com.silence.wanandroid.config.SilenceColors
 import com.silence.wanandroid.config.SilenceSizes
+import com.silence.wanandroid.login.LoginActivity
 import com.silence.wanandroid.main.mine.FunctionItem
 import com.silence.wanandroid.main.mine.MineFunctionList
-import com.silence.wanandroid.main.mine.UserInfo
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.silence.wanandroid.main.mine.model.UserInfo
+import com.silence.wanandroid.main.mine.model.isLogin
 
 /**
  * @date:2021/3/11
@@ -41,20 +44,17 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun MinePage() {
 
-    val userInfo = UserInfo()
-    val userState = mutableStateOf(userInfo)
-
-    UserPad(userInfo = userState.value)
+    UserPad(userInfo = MyApplication.getApp().userState().value)
     Column(
         modifier = Modifier
             .padding(
-                top = SilenceSizes.mine_user_pad_height - SilenceSizes.mine_user_pad_function_spacer,
+                top = SilenceSizes.mineUserPadHeight - SilenceSizes.mineUserPadFunctionSpacer,
             )
             .fillMaxWidth()
             .background(
                 Color.White, RoundedCornerShape(
-                    topStart = SilenceSizes.mine_function_top_corner,
-                    topEnd = SilenceSizes.mine_function_top_corner
+                    topStart = SilenceSizes.mineFunctionTopCorner,
+                    topEnd = SilenceSizes.mineFunctionTopCorner
                 )
             )
     ) {
@@ -71,8 +71,8 @@ fun FunctionList(functionItems: List<FunctionItem>) {
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(
-                start = SilenceSizes.mine_content_start_padding,
-                end = SilenceSizes.mine_content_end_padding
+                start = SilenceSizes.mineContentStartPadding,
+                end = SilenceSizes.mineContentEndPadding
             )
     )
 
@@ -84,7 +84,7 @@ fun MineFunctionItem(functionItem: FunctionItem) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(SilenceSizes.padding50)
             .clickable {
                 functionItem.onClick()
             }
@@ -93,20 +93,20 @@ fun MineFunctionItem(functionItem: FunctionItem) {
             painter = painterResource(id = functionItem.iconSource),
             contentDescription = "",
             modifier = Modifier
-                .size(30.dp)
+                .size(SilenceSizes.padding30)
         )
         Text(
             text = functionItem.title,
             style = TextStyle(
                 color = Color.Black,
                 fontFamily = FontFamily.Monospace,
-                fontSize = 16.sp
+                fontSize = SilenceSizes.textSize16
             ),
-            modifier = Modifier.padding(start = SilenceSizes.mine_content_start_padding)
+            modifier = Modifier.padding(start = SilenceSizes.mineContentStartPadding)
         )
         Text(
             text = functionItem.subTitle,
-            style = TextStyle(color = Color.Black, fontSize = 12.sp)
+            style = TextStyle(color = Color.Black, fontSize = SilenceSizes.textSize12)
         )
         Row(
             horizontalArrangement = Arrangement.End,
@@ -114,13 +114,12 @@ fun MineFunctionItem(functionItem: FunctionItem) {
         ) {
             Text(
                 text = functionItem.arrowText,
-                style = TextStyle(color = Color.Black, fontSize = 14.sp),
-                modifier = Modifier.padding(start = SilenceSizes.mine_content_start_padding)
+                style = TextStyle(color = Color.Black, fontSize = SilenceSizes.textSize14),
+                modifier = Modifier.padding(start = SilenceSizes.mineContentStartPadding)
             )
-            Icon(
+            SilenceIcon(
                 Icons.Filled.KeyboardArrowRight,
-                contentDescription = "",
-                modifier = Modifier.size(26.dp)
+                modifier = Modifier.size(SilenceSizes.padding26)
             )
         }
 
@@ -132,22 +131,30 @@ fun UserPad(userInfo: UserInfo) {
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = Modifier
             .fillMaxWidth()
-            .height(SilenceSizes.mine_user_pad_height)
+            .height(SilenceSizes.mineUserPadHeight)
             .background(SilenceColors.colorMain)
     ) {
         Column(
             modifier = Modifier
                 .padding(
-                    start = SilenceSizes.mine_user_avatar_left_padding,
-                    0.dp,
-                    end = SilenceSizes.mine_user_avatar_right_padding,
-                    0.dp,
+                    start = SilenceSizes.mineUserAvatarLeftPadding,
+                    end = SilenceSizes.mineUserAvatarRightPadding,
                 )
-                .width(SilenceSizes.mine_user_avatar_height)
-                .height(SilenceSizes.mine_user_avatar_height)
+                .width(SilenceSizes.mineUserAvatarHeight)
+                .height(SilenceSizes.mineUserAvatarHeight)
         ) {
-            CoilImage(
-                data = userInfo.avatarUrl,
+            val imageData: Any =
+                if (userInfo.icon == "") R.mipmap.ic_launcher else userInfo.icon
+            Image(
+                painter = rememberImagePainter(
+                    data = imageData,
+                    builder = {
+                        transformations(
+                            RoundedCornersTransformation(3f)
+                        )
+                    },
+                    onExecute = ImagePainter.ExecuteCallback.Default
+                ),
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "avatar",
                 modifier = Modifier
@@ -159,22 +166,32 @@ fun UserPad(userInfo: UserInfo) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp, 12.dp, 0.dp, SilenceSizes.mine_content_end_padding)
+                .padding(
+                    SilenceSizes.padding12,
+                    SilenceSizes.padding12,
+                    SilenceSizes.padding0,
+                    SilenceSizes.mineContentEndPadding
+                )
         ) {
 
             Text(
-                text = userInfo.nickName,
+                text = if (userInfo.publicName.isEmpty()) "暂未登录" else userInfo.publicName,
                 style = TextStyle(
                     color = Color.White,
-                    fontSize = 16.sp,
+                    fontSize = SilenceSizes.textSize16,
                     fontFamily = FontFamily.Monospace
-                )
+                ),
+                modifier = Modifier.clickable {
+                    if (!userInfo.isLogin()) {
+                        Router.rout(LoginActivity::class.java)
+                    }
+                }
             )
 
             Text(
                 text = "等级：${userInfo.level}  排名：${userInfo.rank}  积分：${userInfo.integration}",
-                style = TextStyle(color = Color.White, fontSize = 14.sp),
-                modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)
+                style = TextStyle(color = Color.White, fontSize = SilenceSizes.textSize14),
+                modifier = Modifier.padding(top = SilenceSizes.padding16)
             )
         }
     }
