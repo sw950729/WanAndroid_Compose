@@ -74,6 +74,7 @@ dependencies {
 
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha06"
 
+    implementation 'com.google.accompanist:accompanist-pager:0.19.0'
 }
 noArg {
     annotation("com.silence.wanandroid.net.Empty")

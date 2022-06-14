@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import com.silence.wanandroid.compose.SilenceIcon
 import com.silence.wanandroid.compose.SilenceTopAppBar
 import com.silence.wanandroid.config.SilenceSizes
@@ -31,6 +33,7 @@ import rememberPagerState
  * @author:Silence
  * @describe:
  **/
+@OptIn(ExperimentalPagerApi::class)
 @Preview
 @Composable
 fun HomePage() {
@@ -50,10 +53,8 @@ fun HomePage() {
         })
         LazyColumn {
             item {
-                ViewPager(
-                    state = pagerState,
-                    maxSize = banner.value?.size,
-                    maxHeight = (SilenceSizes.padding200),
+                HorizontalPager(
+                    count = banner.value?.size ?: 0,
                     modifier = Modifier.height(SilenceSizes.padding200)
                 ) {
                     banner.value?.get(it)?.let { it1 ->
